@@ -29,8 +29,14 @@ out/
 .output/
 *.tsbuildinfo
 
-# ── Conceive (private app) ────────────────────────────────────────────────────
+# ── Private / secondary frontend apps ────────────────────────────────────────
 frontend/apps/conceive-bridge/
+frontend/apps/command-ct/
+frontend/command-bridge/
+frontend/src/
+frontend/SomaMinimal.jsx
+frontend/KnowledgeGraph3D.jsx
+frontend/TestApp.jsx
 server/routes/conceiveRoutes.js
 
 # ── External / Cloned Repos (not part of SOMA source) ────────────────────────
