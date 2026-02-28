@@ -1,0 +1,161 @@
+{
+  "version": "1.0",
+  "description": "Web crawling targets for SOMA's autonomous learning",
+  "schedule": {
+    "enabled": true,
+    "runAt": "00:00",
+    "frequency": "daily",
+    "maxDuration": 3600000
+  },
+  "crawlLimits": {
+    "maxPagesPerTarget": 10,
+    "maxDepth": 2,
+    "requestDelay": 1000,
+    "timeout": 10000,
+    "maxConcurrentWorkers": 4
+  },
+  "targets": [
+    {
+      "name": "Stack Overflow - JavaScript",
+      "type": "stackoverflow",
+      "enabled": true,
+      "priority": "high",
+      "queries": [
+        "javascript async await best practices",
+        "javascript closures explained",
+        "javascript promises vs async",
+        "javascript memory leaks",
+        "javascript performance optimization"
+      ],
+      "maxPages": 5
+    },
+    {
+      "name": "Stack Overflow - Python",
+      "type": "stackoverflow",
+      "enabled": true,
+      "priority": "high",
+      "queries": [
+        "python type hints",
+        "python async programming",
+        "python decorators",
+        "python generators",
+        "python best practices"
+      ],
+      "maxPages": 5
+    },
+    {
+      "name": "Stack Overflow - System Design",
+      "type": "stackoverflow",
+      "enabled": true,
+      "priority": "high",
+      "queries": [
+        "microservices architecture",
+        "kubernetes deployment strategies",
+        "database sharding",
+        "load balancing algorithms",
+        "caching strategies"
+      ],
+      "maxPages": 5
+    },
+    {
+      "name": "MDN Web Docs",
+      "type": "mdn",
+      "enabled": true,
+      "priority": "high",
+      "paths": [
+        "/en-US/docs/Web/JavaScript/Reference",
+        "/en-US/docs/Web/API",
+        "/en-US/docs/Web/HTTP"
+      ],
+      "maxPages": 10
+    },
+    {
+      "name": "Dev.to - JavaScript",
+      "type": "devto",
+      "enabled": true,
+      "priority": "medium",
+      "tags": [
+        "javascript",
+        "typescript",
+        "nodejs",
+        "react",
+        "vue"
+      ],
+      "maxPages": 5
+    },
+    {
+      "name": "Dev.to - DevOps",
+      "type": "devto",
+      "enabled": true,
+      "priority": "medium",
+      "tags": [
+        "devops",
+        "docker",
+        "kubernetes",
+        "cicd",
+        "aws"
+      ],
+      "maxPages": 5
+    },
+    {
+      "name": "GitHub Awesome Lists",
+      "type": "github",
+      "enabled": true,
+      "priority": "medium",
+      "topics": [
+        "javascript",
+        "python",
+        "machine-learning",
+        "devops",
+        "awesome-lists"
+      ],
+      "maxPages": 3
+    },
+    {
+      "name": "Official Documentation - Node.js",
+      "type": "documentation",
+      "enabled": true,
+      "priority": "high",
+      "topics": [
+        "nodejs"
+      ],
+      "maxPages": 10
+    },
+    {
+      "name": "Official Documentation - Python",
+      "type": "documentation",
+      "enabled": true,
+      "priority": "high",
+      "topics": [
+        "python"
+      ],
+      "maxPages": 10
+    },
+    {
+      "name": "Official Documentation - React",
+      "type": "documentation",
+      "enabled": true,
+      "priority": "high",
+      "topics": [
+        "react"
+      ],
+      "maxPages": 10
+    }
+  ],
+  "dataProcessing": {
+    "deduplication": true,
+    "minContentLength": 100,
+    "maxContentLength": 10000,
+    "filterCodeOnly": false,
+    "extractCodeExamples": true,
+    "categorize": true,
+    "summarize": true
+  },
+  "storage": {
+    "saveRawData": true,
+    "rawDataPath": "./data/crawled-raw",
+    "processedDataPath": "./knowledge-feed/crawled",
+    "compress": true,
+    "retentionDays": 30
+  }
+}

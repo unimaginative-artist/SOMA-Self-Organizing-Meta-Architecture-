@@ -1,0 +1,5 @@
+{
+  "name": "Pulse Terminal",
+  "description": "A Warp-inspired, AI-powered developer environment with dynamic backend orchestration, real-time command suggestions, and integrated code generation.",
+  "requestFramePermissions": []
+}

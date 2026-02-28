@@ -1,0 +1,121 @@
+{
+  "enabled": true,
+  "schedule": {
+    "timezone": "America/New_York",
+    "learning_sessions": [
+      {
+        "name": "Evening Reflection",
+        "cron": "30 22 * * *",
+        "duration_minutes": 30,
+        "tasks": [
+          {
+            "type": "update_mind_map",
+            "arbiter": "NighttimeLearningOrchestrator",
+            "params": {}
+          },
+          {
+            "type": "graph_consolidation",
+            "arbiter": "NighttimeLearningOrchestrator",
+            "params": {
+              "pruneThreshold": 0.2,
+              "mergeThreshold": 0.95
+            }
+          },
+          {
+            "type": "update_journal",
+            "arbiter": "NighttimeLearningOrchestrator",
+            "params": {}
+          }
+        ]
+      },
+      {
+        "name": "Deep Learning Session",
+        "cron": "0 3 * * *",
+        "duration_minutes": 120,
+        "tasks": [
+          {
+            "type": "pattern_extraction",
+            "arbiter": "ContinuousLearningBridge",
+            "params": {
+              "minPatterns": 50,
+              "maxPatterns": 500
+            }
+          },
+          {
+            "type": "prompt_evolution",
+            "arbiter": "ContinuousLearningBridge",
+            "params": {
+              "topK": 10,
+              "evolutionStrategy": "tournament"
+            }
+          },
+          {
+            "type": "incremental_training",
+            "arbiter": "ContinuousLearningBridge",
+            "params": {
+              "minExperiences": 50,
+              "batchSize": 32,
+              "epochs": 1
+            }
+          },
+          {
+            "type": "curiosity_exploration",
+            "arbiter": "CuriosityEngine",
+            "params": {
+              "maxQuestions": 20,
+              "explorationDepth": 3
+            }
+          },
+          {
+            "type": "memory_consolidation",
+            "arbiter": "MnemonicArbiter",
+            "params": {
+              "archiveOlderThan": 604800000,
+              "compressThreshold": 0.3
+            }
+          },
+          {
+            "type": "export_training_data",
+            "arbiter": "TrainingDataExporter",
+            "params": {
+              "minQualityScore": 0.6,
+              "format": "alpaca"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Weekend Deep Dive",
+        "cron": "0 2 * * 0",
+        "duration_minutes": 180,
+        "tasks": [
+          {
+            "type": "full_experience_replay",
+            "arbiter": "ContinuousLearningBridge",
+            "params": {
+              "sampleSize": 1000,
+              "strategy": "prioritized"
+            }
+          },
+          {
+            "type": "meta_learning_optimization",
+            "arbiter": "MetaLearningEngine",
+            "params": {
+              "optimizeHyperparameters": true,
+              "targetMetric": "learning_velocity"
+            }
+          },
+          {
+            "type": "fragment_evolution",
+            "arbiter": "FragmentRegistry",
+            "params": {
+              "enableGenesis": true,
+              "enableMitosis": true,
+              "pruneUnderperformers": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

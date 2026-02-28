@@ -1,0 +1,66 @@
+{
+  "system_name": "SOMA",
+  "version": "2.0.0",
+  "description": "Self-Organizing Metacognitive Architecture",
+  "root_directory": ".",
+  "components": {
+    "brain": {
+      "description": "Central cognitive processing and decision making",
+      "files": [
+        "arbiters/SOMArbiterV2.cjs",
+        "core/BaseArbiter.cjs",
+        "core/ArbiterOrchestrator.cjs"
+      ]
+    },
+    "memory": {
+      "description": "Hybrid memory system (Hot/Warm/Cold)",
+      "files": [
+        "arbiters/MnemonicArbiter.cjs",
+        "cognitive/CognitiveBridge.cjs",
+        "transmitters/TransmitterManager.cjs"
+      ]
+    },
+    "nervous_system": {
+      "description": "Backend server and API routes",
+      "files": [
+        "server/index.cjs"
+      ]
+    },
+    "senses": {
+      "description": "Input/Output processing (Vision, Audio)",
+      "files": [
+        "arbiters/VisionProcessingArbiter.js",
+        "arbiters/AudioProcessingArbiter.js"
+      ]
+    },
+    "personality": {
+      "description": "Emotional engine and persona management",
+      "files": [
+        "cognitive/EmotionalEngine.cjs",
+        "arbiters/SteveArbiter.js"
+      ]
+    },
+    "execution": {
+      "description": "Task execution and micro-agents",
+      "files": [
+        "microagents/MicroAgentPool.cjs",
+        "microagents/FetchAgent.cjs",
+        "microagents/FileAgent.cjs"
+      ]
+    },
+    "frontend": {
+      "description": "User Interface and Command Bridge",
+      "files": [
+        "frontend/apps/command-bridge/SomaCommandBridge.jsx",
+        "frontend/apps/command-ct/SomaCT.jsx"
+      ]
+    }
+  },
+  "capabilities": [
+    "read_files",
+    "write_files",
+    "execute_code",
+    "search_fs",
+    "self_modification"
+  ]
+}

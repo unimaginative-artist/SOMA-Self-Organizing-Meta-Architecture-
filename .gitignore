@@ -1,0 +1,165 @@
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Environment & Secrets (NEVER COMMIT THESE) ───────────────────────────────
+.env
+.env.*
+!.env.example
+*.env
+config/api-keys.env
+config/exchange-credentials.json
+backend/prophet-engine/.env
+credentials.json
+*.pem
+*.key
+*.secret
+*secret*
+*_secret*
+
+# ── Build Output ──────────────────────────────────────────────────────────────
+dist/
+dist-electron/
+build/
+release/
+out/
+.next/
+.nuxt/
+.output/
+*.tsbuildinfo
+
+# ── External / Cloned Repos (not part of SOMA source) ────────────────────────
+agenticSeek_repo/
+agentic_repo/
+agents_repo/
+changeling_repo/
+clawdbot_repo/
+copyparty_repo/
+librechat_repo/
+nofx_repo/
+workflowagent_repo/
+kaymen99_ai_assistant/
+research/
+Deep-RL-Stock-Trading/
+SportsBetting/
+binance-futures-bot/
+trading-automation/
+trading-bot/
+crypto-fanduel-sports/
+Finance_AgenticAI/
+
+# ── Vendor / Third-Party Tools ────────────────────────────────────────────────
+vendor/
+arbiterium_source/
+
+# ── ML Models & Training Artifacts ───────────────────────────────────────────
+models/
+unsloth_compiled_cache/
+checkpoints/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+requirements-training.txt
+
+# ── Databases & State ─────────────────────────────────────────────────────────
+*.db
+*.db-shm
+*.db-wal
+*.db-bak
+*.db-new
+*.sqlite
+*.sqlite3
+soma-memory.db*
+soma-vectors.json
+data/
+backup/
+config_backup/
+
+# ── Personal & Private Documents ─────────────────────────────────────────────
+Articles_Of_Incorporation.pdf
+IMG_2855.PNG
+"a Steve.gif"
+"a kevin_icon.png"
+kevin_icon.ico
+kevin_icon.png
+pink-dollar-money-png.png
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*_out.txt
+*_err.txt
+*_debug.txt
+server_error*.log
+soma_*.txt
+unified_*.txt
+server_log*.txt
+server_err*.txt
+server_direct*.txt
+startup_error*.txt
+backend_log.txt
+boot_log.txt
+
+# ── Runtime / Generated Data ──────────────────────────────────────────────────
+.soma/
+.arbiter-state/
+.gemini/
+.claude/
+kevin_watcher_data/
+temp_agent_platform/
+_archive/
+_imports/
+tmpclaude-*
+
+# ── Temporary Files ───────────────────────────────────────────────────────────
+tmp/
+temp/
+nul
+*.tmp
+
+# ── Sensitive Config Files ───────────────────────────────────────────────────
+kevin_watcher_config.json
+
+# ── Test Data & Scratch Files ─────────────────────────────────────────────────
+test_memory.json
+test_memory_specific.json
+test_cross_session.json
+test_vectors.json
+test_personality.json
+espn_sample.json
+
+# ── Archives ──────────────────────────────────────────────────────────────────
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.tar
+
+# ── Binaries ──────────────────────────────────────────────────────────────────
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ── Vite ─────────────────────────────────────────────────────────────────────
+vite.config.js.timestamp-*
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo

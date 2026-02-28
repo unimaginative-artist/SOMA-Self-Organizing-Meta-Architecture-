@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --background: #0d0d0e;
+    --foreground: #e5e7eb;
+}
+
+body {
+    @apply bg-[#0d0d0e] text-zinc-300;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}

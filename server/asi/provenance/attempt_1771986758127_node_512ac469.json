@@ -1,0 +1,105 @@
+{
+  "cycle": 0,
+  "nodeId": "node_512ac469",
+  "rewriteOutcome": {
+    "attempts": [
+      {
+        "ok": false,
+        "node": {
+          "id": "node_512ac469_repair_0",
+          "code": "Error from PROMETHEUS: GEMINI_API_KEY not configured",
+          "paradigm": "unknown",
+          "provenance": {
+            "parent": "node_512ac469",
+            "method": "rewrite",
+            "brain": "PROMETHEUS",
+            "attempt": 1
+          },
+          "validation": {
+            "passed": null,
+            "results": null,
+            "error": null
+          }
+        },
+        "brain": "PROMETHEUS",
+        "attempt": 1
+      },
+      {
+        "ok": false,
+        "node": {
+          "id": "node_512ac469_repair_1",
+          "code": "Error from PROMETHEUS: GEMINI_API_KEY not configured",
+          "paradigm": "unknown",
+          "provenance": {
+            "parent": "node_512ac469",
+            "method": "rewrite",
+            "brain": "PROMETHEUS",
+            "attempt": 2
+          },
+          "validation": {
+            "passed": null,
+            "results": null,
+            "error": null
+          }
+        },
+        "brain": "PROMETHEUS",
+        "attempt": 2
+      },
+      {
+        "ok": false,
+        "node": {
+          "id": "node_512ac469_repair_2",
+          "code": "Error from PROMETHEUS: GEMINI_API_KEY not configured",
+          "paradigm": "unknown",
+          "provenance": {
+            "parent": "node_512ac469",
+            "method": "rewrite",
+            "brain": "PROMETHEUS",
+            "attempt": 3
+          },
+          "validation": {
+            "passed": null,
+            "results": null,
+            "error": null
+          }
+        },
+        "brain": "PROMETHEUS",
+        "attempt": 3
+      }
+    ],
+    "best": {
+      "id": "node_512ac469_repair_0",
+      "code": "Error from PROMETHEUS: GEMINI_API_KEY not configured",
+      "paradigm": "unknown",
+      "provenance": {
+        "parent": "node_512ac469",
+        "method": "rewrite",
+        "brain": "PROMETHEUS",
+        "attempt": 1
+      },
+      "validation": {
+        "passed": null,
+        "results": null,
+        "error": null
+      }
+    },
+    "nodeId": "node_512ac469",
+    "timestamp": "2026-02-25T02:32:38.125Z"
+  },
+  "candidate": {
+    "id": "node_512ac469_repair_0",
+    "code": "Error from PROMETHEUS: GEMINI_API_KEY not configured",
+    "paradigm": "unknown",
+    "validation": {
+      "passed": null,
+      "results": null,
+      "error": null
+    }
+  },
+  "reflection": {
+    "rootCause": "parse_failure",
+    "lessonsCount": 0,
+    "hintsCount": 0
+  },
+  "timestamp": "2026-02-25T02:32:38.126Z"
+}
