@@ -105,7 +105,14 @@ soma/
 
 ## Screenshots
 
-*Coming soon*
+**Cognitive Terminal — talk to SOMA**
+![SOMA Cognitive Terminal](screenshots/Screenshot%202026-02-28%20093407.png)
+
+**Mission Control — autonomous trading agents**
+![Mission Control](screenshots/Screenshot%202026-02-28%20093626.png)
+
+**Arbiterium — 178 cognitive modules, live**
+![Arbiterium](screenshots/Screenshot%202026-02-28%20095130.png)
 
 ---
 
