@@ -29,6 +29,10 @@ out/
 .output/
 *.tsbuildinfo
 
+# ── Conceive (private app) ────────────────────────────────────────────────────
+frontend/apps/conceive-bridge/
+server/routes/conceiveRoutes.js
+
 # ── External / Cloned Repos (not part of SOMA source) ────────────────────────
 agenticSeek_repo/
 agentic_repo/
