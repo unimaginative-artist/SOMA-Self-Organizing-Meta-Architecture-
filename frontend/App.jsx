@@ -1,8 +1,6 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import './index.css';
 import SomaCommandBridge from './apps/command-bridge/SomaCommandBridge';
-
-const ConceiveCommandBridge = lazy(() => import('./apps/conceive-bridge/ConceiveCommandBridge.jsx'));
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -36,22 +34,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Route: ?app=conceive → ConceiveCommandBridge
-//        (default)      → SomaCommandBridge
-const isConceive = typeof window !== 'undefined' &&
-  (new URLSearchParams(window.location.search).get('app') === 'conceive');
-
 function App() {
-  if (isConceive) {
-    return (
-      <ErrorBoundary>
-        <Suspense fallback={<div style={{background:'#09090b',height:'100vh',display:'flex',alignItems:'center',justifyContent:'center',color:'#666',fontFamily:'sans-serif'}}>Loading Conceive...</div>}>
-          <ConceiveCommandBridge />
-        </Suspense>
-      </ErrorBoundary>
-    );
-  }
-
   return (
     <ErrorBoundary>
       <SomaCommandBridge />
