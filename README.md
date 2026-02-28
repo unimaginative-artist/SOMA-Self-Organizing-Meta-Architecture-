@@ -1,79 +1,111 @@
 # SOMA — Self-Organizing Meta Architecture
 
-SOMA is a local-first AI operating system. It runs on your machine, owns its own memory, reasons with multiple AI models simultaneously, and gets smarter over time — without sending your data anywhere it shouldn't go.
+> Local-first AI operating system. Persistent memory, 178 cognitive modules, multi-model reasoning. Runs on your hardware, not theirs.
+
+SOMA is not a chatbot. She's an AI that lives on your computer, owns her own memory, and thinks with multiple minds at once. She gets smarter over time, orchestrates her own agents, and can control your desktop — all without phoning home.
 
 ---
 
-## What it does
+## What makes SOMA different
 
-- **QuadBrain** — four reasoning engines working in parallel (Gemini, Ollama local models, Nemesis adversarial, Analyst)
-- **Arbiters** — 50+ specialized cognitive modules (memory, vision, audio, trading, coding, web crawl, and more)
-- **Persistent memory** — vector + graph memory that survives restarts and builds over time
-- **Steve** — autonomous multi-agent task orchestration with shadow clones and approval queues
-- **Knowledge Graph** — 3D real-time visualization of what SOMA knows and how concepts connect
-- **Voice** — Whisper STT + TTS, always listening if you want it to be
-- **Pulse IDE** — an in-browser AI coding environment built into SOMA
-- **Finance modules** — market analysis, portfolio optimization, paper trading, adversarial debate
-- **Conceive** — AI-powered audit and document intelligence (Excel analysis, number hunting, document review)
+| Feature | SOMA |
+|---------|------|
+| Runs locally | Yes — Ollama, no cloud required |
+| Persistent memory | Yes — vector + graph, survives restarts |
+| Multi-model reasoning | Yes — Gemini, Ollama, Anthropic, OpenAI |
+| Self-improvement | Yes — Nemesis adversarial training loop |
+| Agent orchestration | Yes — Steve + 178 specialized arbiters |
+| Voice interface | Yes — Whisper STT + TTS |
+| Your data stays yours | Yes |
+
+---
+
+## Core systems
+
+**QuadBrain** — Four reasoning engines running in parallel. Gemini for breadth, Ollama for local speed, Nemesis for adversarial self-critique, Analyst for structured output. Results are fused into a single response.
+
+**Arbiters** — 178 specialized cognitive modules. Each one owns a slice of SOMA's intelligence: memory archival, causal reasoning, computer vision, audio processing, autonomous capability expansion, adversarial debate, market analysis, web crawl, code review, and more.
+
+**Persistent Memory** — Hybrid vector + knowledge graph. SOMA remembers conversations, builds beliefs over time, and can recall semantic context across sessions.
+
+**Steve** — Autonomous multi-agent orchestration. Spawn shadow clone agents, run parallel task trees, require human approval on high-stakes actions.
+
+**Pulse IDE** — AI-native coding environment built directly into SOMA's interface.
+
+**Conceive** — Document and audit intelligence. Load Excel files, hunt numbers across sheets, analyze documents, ask SOMA to explain any cell in audit context.
 
 ---
 
 ## Requirements
 
-- Node.js 18+
-- One of: Ollama (local), Gemini API key, or OpenAI API key
-- 8GB RAM minimum, 16GB recommended for heavy arbiters
+- **Node.js** 18+
+- **One AI backend** (any of the following):
+  - [Ollama](https://ollama.com) — free, fully local
+  - Gemini API key — fast, generous free tier
+  - OpenAI or Anthropic API key — optional
+- **RAM**: 8GB minimum, 16GB recommended
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. Clone
+# Clone
 git clone https://github.com/unimaginative-artist/soma.git
 cd soma
 
-# 2. Install
+# Install dependencies
 npm install
 
-# 3. Add your API keys
+# Set up your API keys
 cp config/api-keys.env.example config/api-keys.env
-# Edit config/api-keys.env with your keys
+# Open config/api-keys.env and add your keys
 
-# 4. Start
+# Launch
 node launcher_ULTRA.mjs
 ```
 
-Open `http://localhost:5173` in your browser.
+Then open **http://localhost:5173**
 
 ---
 
 ## API keys
 
-SOMA works with whatever you have. Add keys to `config/api-keys.env`:
+Edit `config/api-keys.env` — you only need one to get started:
 
 ```env
 GEMINI_API_KEY=your_key_here
-OPENAI_API_KEY=your_key_here       # optional
-ANTHROPIC_API_KEY=your_key_here    # optional
+OPENAI_API_KEY=your_key_here
+ANTHROPIC_API_KEY=your_key_here
+OLLAMA_BASE_URL=http://localhost:11434   # if using Ollama
 ```
-
-If you have Ollama running locally, SOMA will find it automatically.
 
 ---
 
-## Architecture
+## Project structure
 
 ```
-SOMA
-├── core/          — boot, QuadBrain, cognitive orchestration
-├── arbiters/      — 50+ specialized reasoning modules
-├── server/        — Express API, routes, loaders
-├── frontend/      — React UI (Command Bridge, Pulse IDE, Conceive)
-├── agents/        — autonomous microagents
-├── workers/       — Node.js worker threads for non-blocking inference
-└── config/        — environment and configuration (keys not included)
+soma/
+├── core/           — boot sequence, QuadBrain, cognitive orchestration
+├── arbiters/       — 178 specialized reasoning modules
+├── server/         — Express API server and routes
+├── frontend/       — React UI (Command Bridge, Pulse IDE, Conceive)
+│   └── apps/
+│       ├── command-bridge/    — main SOMA interface
+│       ├── command-ct/        — cognitive terminal
+│       └── conceive-bridge/   — audit & document intelligence
+├── agents/         — autonomous microagents
+├── workers/        — Node.js worker threads (non-blocking inference)
+├── cognitive/      — personality, emotional engine, voice
+├── scripts/        — startup and utility scripts
+└── config/         — configuration (add your own api-keys.env)
 ```
+
+---
+
+## Screenshots
+
+*Coming soon*
 
 ---
 
