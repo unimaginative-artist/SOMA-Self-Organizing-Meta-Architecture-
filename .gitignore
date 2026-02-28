@@ -158,6 +158,14 @@ Thumbs.db
 desktop.ini
 ehthumbs.db
 
+# ── Markdown (keep only README.md) ───────────────────────────────────────────
+*.md
+!README.md
+!core/personas/*.md
+!server/pulse-workers/directives/*.md
+!server/pulse-workers/WORKER_PROTOCOL.md
+!config/README.md
+
 # ── Editor ────────────────────────────────────────────────────────────────────
 .vscode/settings.json
 .idea/
