@@ -365,15 +365,24 @@ ${colors.reset}`);
     return proc;
   }, { restartOnExit: false });
 
-  log('SYSTEM', '???? Starting Flask ML Backend (The Goal)...', colors.yellow);
-  flaskSupervisor.start();
+  // Flask ML backend — optional, skip gracefully if Python deps not installed
+  if (fs.existsSync(PATHS.FLASK_SERVER)) {
+    log('SYSTEM', 'Starting Flask ML Backend...', colors.yellow);
+    flaskSupervisor.start();
+  } else {
+    log('SYSTEM', 'Flask ML Backend not found — skipping (optional feature)', colors.yellow);
+  }
 
-  // Whisper voice transcription server (port 5002)
+  // Whisper voice server — optional, skip gracefully if not set up
   const whisperSupervisor = new Supervisor('WHISPER', () =>
     startService('WHISPER', `"${PATHS.WHISPER_PYTHON}"`, [`"${PATHS.WHISPER_SERVER}"`], PATHS.ROOT, colors.blue)
   );
-  log('SYSTEM', '???? Starting Whisper Voice Server...', colors.yellow);
-  whisperSupervisor.start();
+  if (fs.existsSync(PATHS.WHISPER_SERVER) && fs.existsSync(PATHS.WHISPER_PYTHON)) {
+    log('SYSTEM', 'Starting Whisper Voice Server...', colors.yellow);
+    whisperSupervisor.start();
+  } else {
+    log('SYSTEM', 'Whisper Voice Server not found — skipping (optional feature)', colors.yellow);
+  }
 
   log('SYSTEM', '???? Starting SOMA Backend Server...', colors.yellow);
   backendSupervisor.start();
