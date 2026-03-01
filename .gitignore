@@ -138,6 +138,18 @@ nul
 # ── Sensitive Config Files ───────────────────────────────────────────────────
 kevin_watcher_config.json
 
+# ── Runtime Memory & Provenance Data ─────────────────────────────────────────
+hippocampus/
+merovingian_provenance/
+asi/provenance/
+asi/asi/
+backend/finance-database-repo/
+backend/prophet-engine/data/
+knowledge-feed/
+pulse-terminal/
+dashboard/
+src/
+
 # ── Test Data & Scratch Files ─────────────────────────────────────────────────
 test_memory.json
 test_memory_specific.json
