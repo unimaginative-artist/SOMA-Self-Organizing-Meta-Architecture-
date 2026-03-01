@@ -93,8 +93,11 @@ export const FragmentRegistry = ({
             'THALAMUS': { x: 0, y: 0 }
         };
 
+        // Cap to 300 nodes — beyond that the simulation crashes the browser tab
+        const cappedFragments = fragments.slice(0, 300);
+
         // Normalize data
-        const nodes = fragments.map(f => {
+        const nodes = cappedFragments.map(f => {
             const existing = simulationRef.current?.nodes().find(n => n.id === f.id);
             return {
                 ...f,
@@ -123,8 +126,9 @@ export const FragmentRegistry = ({
                 .force("clusterY", d3.forceY(d => clusterCenters[d.domain]?.y || 0).strength(0.02))
                 .force("center", d3.forceCenter(0, 0).strength(0.01))
                 .force("collide", d3.forceCollide().radius(d => d.importance * 4).iterations(2))
-                .velocityDecay(0.02) // EXTREMELY LOW friction for eternal movement
-                .alphaTarget(0.1); // Keep the simulation "Hot" forever
+                .velocityDecay(0.4)  // Normal friction — nodes settle
+                .alphaDecay(0.02)    // Slow cool-down so layout has time to form
+                .alphaTarget(0);     // Simulation cools and stops — no infinite CPU drain
         } else {
             simulationRef.current.nodes(nodes);
             simulationRef.current.force("link").links(edges);
@@ -191,11 +195,6 @@ export const FragmentRegistry = ({
 
         simulationRef.current.on("tick", () => {
             nodes.forEach(d => {
-                // 🌪️ THERMAL DRIFT: Add tiny random movement so it never stops
-                if (!d.fx) {
-                    d.vx += (Math.random() - 0.5) * 0.05;
-                    d.vy += (Math.random() - 0.5) * 0.05;
-                }
 
                 const p = project(d.x, d.y, d.z || 0);
                 d.px = p.x; d.py = p.y; d.pscale = p.scale;

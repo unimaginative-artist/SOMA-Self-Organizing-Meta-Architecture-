@@ -31,7 +31,7 @@ export default function(system) {
 
             // 2. Load Real Memories (Mnemonic Cold Tier)
             if (system.mnemonicArbiter && typeof system.mnemonicArbiter.getRecentColdMemories === 'function') {
-                const memories = system.mnemonicArbiter.getRecentColdMemories(500); // Pull up to 500 real memories
+                const memories = system.mnemonicArbiter.getRecentColdMemories(150); // Cap at 150 to avoid crashing the browser graph
                 memories.forEach(m => {
                     // Map memory metadata to domains
                     let domain = 'AURORA'; 

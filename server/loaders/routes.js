@@ -927,7 +927,7 @@ export function loadRoutes(app, system) {
     };
 
     safeMount('/api/soma', checkReady, somaRoutes(system));
-    safeMount('/api/knowledge', checkReady, knowledgeRoutes(system.knowledgeGraph || system.knowledge));
+    safeMount('/api/knowledge', checkReady, knowledgeRoutes(system));
     safeMount('/api/research', checkReady, researchRoutes(system));
     safeMount('/api/kevin', kevinRoutes);
     safeMount('/api/pulse', pulseRoutes({
