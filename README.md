@@ -156,6 +156,10 @@ View your node's connections in **Settings → Network**.
 
 ---
 
+## Known Issues
+
+SOMA is ambitious and honest about it. See [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for a full breakdown of what's broken, what's stubbed, and what needs work. The short version: core reasoning, memory, arbiters, and the frontend all work. The self-improvement feedback loop, GMN peer discovery, and live trading execution need finishing.
+
 ## Contributing
 
 Pull requests welcome. SOMA is modular by design — the easiest contribution is a new arbiter. Each arbiter is a self-contained JS class in `/arbiters` that inherits from `BaseArbiter`.
