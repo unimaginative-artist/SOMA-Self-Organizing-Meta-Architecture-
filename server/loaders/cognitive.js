@@ -22,6 +22,7 @@ import messageBroker from '../../core/MessageBroker.js';
 const GoalPlannerModule = require('../../arbiters/GoalPlannerArbiter.cjs');
 const BeliefSystemModule = require('../../arbiters/BeliefSystemArbiter.cjs');
 const LearningVelocityTrackerModule = require('../../arbiters/LearningVelocityTracker.cjs');
+const SteveArbiter = require('../../arbiters/SteveArbiter.cjs');
 const ExecutiveCortexArbiter = require('../../arbiters/ExecutiveCortexArbiter.js').ExecutiveCortexArbiter || require('../../arbiters/ExecutiveCortexArbiter.js').default || require('../../arbiters/ExecutiveCortexArbiter.js');
 const SensoryCortexArbiter = require('../../arbiters/SensoryCortexArbiter.js').SensoryCortexArbiter || require('../../arbiters/SensoryCortexArbiter.js').default || require('../../arbiters/SensoryCortexArbiter.js');
 const ImmuneCortexArbiter = require('../../arbiters/ImmuneCortexArbiter.js').ImmuneCortexArbiter || require('../../arbiters/ImmuneCortexArbiter.js').default || require('../../arbiters/ImmuneCortexArbiter.js');
@@ -187,7 +188,24 @@ export async function loadCognitiveSystems(toolRegistry = null) {
     system.worldModel = worldModel;
     system.knowledgeGraph = knowledgeGraph;
     system.knowledge = knowledgeGraph;
-    system.steveArbiter = system.executiveCortex;
+
+    // 6b. REAL STEVE — SteveArbiter.cjs needs an orchestrator with quadBrain in its population.
+    //     The old alias (system.executiveCortex) didn't have processChat/listTools/executeTool.
+    try {
+        const steveOrchestrator = {
+            population: new Map([['quadBrain', quadBrain]]),
+            transmitters: null  // hybridSearch wired in extended.js after HybridSearchArbiter loads
+        };
+        system.steveArbiter = new SteveArbiter(messageBroker, {
+            orchestrator: steveOrchestrator,
+            learningPipeline: null  // LearningPipeline wired in extended.js
+        });
+        await system.steveArbiter.initialize();
+        console.log('      ✅ SteveArbiter ready (processChat + tools online)');
+    } catch (steveErr) {
+        console.error('[Cognitive] ⚠️ SteveArbiter failed, falling back to ExecutiveCortex:', steveErr.message);
+        system.steveArbiter = system.executiveCortex;
+    }
 
     // 7. EARLY OUTCOME TRACKER — available from boot so chat can record outcomes immediately
     //    Extended loading will later create the full LearningPipeline which supersedes this.

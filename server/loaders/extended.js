@@ -1309,16 +1309,16 @@ export async function loadExtendedSystems(system) {
         // ExecutiveCortex.execute('code-modification', ...) will now route through real agentic execution
         if (!steve.swarm && ext.engineeringSwarm) steve.swarm = ext.engineeringSwarm;
 
-        // Fix Steve's orchestrator — it gets an empty Map() stub during boot.
-        // Populate it with the real system arbiters so Steve can find the brain.
-        if (steve.orchestrator && system.quadBrain) {
+        // Wire Steve's orchestrator with the full swarm + hybrid search transmitter.
+        // cognitive.js already seeds population with quadBrain; here we add any late-loaded arbiters
+        // and wire the hybridSearch transmitter (which loads in extended.js Tier 2).
+        if (steve.orchestrator) {
             const pop = steve.orchestrator.population || new Map();
-            if (pop.size === 0 && system.quadBrain) {
-                pop.set('quadBrain', system.quadBrain);
-                if (system.somArbiter) pop.set('somArbiter', system.somArbiter);
-                steve.orchestrator.population = pop;
-                steve.orchestrator.transmitters = system.hybridSearchArbiter || system.hybridSearch || null;
-            }
+            if (system.quadBrain && !pop.has('quadBrain')) pop.set('quadBrain', system.quadBrain);
+            if (system.somArbiter && !pop.has('somArbiter')) pop.set('somArbiter', system.somArbiter);
+            steve.orchestrator.population = pop;
+            // Wire hybridSearch for RAG — set whenever available (even if already partially wired)
+            steve.orchestrator.transmitters = system.hybridSearchArbiter || system.hybridSearch || steve.orchestrator.transmitters || null;
         }
         // Also give Steve direct brain access as a fallback
         if (!steve.quadBrain && system.quadBrain) steve.quadBrain = system.quadBrain;

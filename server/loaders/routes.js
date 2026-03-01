@@ -935,7 +935,7 @@ export function loadRoutes(app, system) {
         goalPlanner: system.goalPlanner,
         contextManager: system.contextManager,
         pulseArbiter: system.pulseArbiter,
-        steveArbiter: system.executiveCortex
+        steveArbiter: system.steveArbiter
     }));
 
     // 5b. ARBITERIUM
