@@ -180,6 +180,14 @@ export async function loadCognitiveSystems(toolRegistry = null) {
         initIfPossible(system.simulation, 'Simulation')
     ]);
 
+    // Wire goalPlanner into the brain so goal state is available inside every reason() call.
+    // cognitive.js creates quadBrain before goalPlanner, so we set it after the fact.
+    // reason() reads this.goalPlanner lazily — no restart needed.
+    if (system.goalPlanner) {
+        quadBrain.goalPlanner = system.goalPlanner;
+        console.log('      🔗 GoalPlanner → QuadBrain (goals now feed into every response)');
+    }
+
     // 6. LEGACY ALIASES
     system.mnemonicArbiter = mnemonicArbiter;
     system.adaptiveRouter = adaptiveRouter;

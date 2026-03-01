@@ -293,6 +293,20 @@ ${contextStr}`;
                 } catch (e) { /* memory errors never block chat */ }
             }
 
+            // Fetch active goals — passed to V3.callBrain() so System 1 fast path gets them too.
+            // V2 enrichedContext handles System 2's richer version; this covers the fast path gap.
+            let contextActiveGoals = null;
+            try {
+                if (system.goalPlanner?.getActiveGoals) {
+                    const gr = system.goalPlanner.getActiveGoals({});
+                    const goals = (gr?.goals || [])
+                        .filter(g => g.status === 'active' || g.status === 'pending')
+                        .sort((a, b) => (b.priority || 0) - (a.priority || 0))
+                        .slice(0, 3);
+                    if (goals.length) contextActiveGoals = goals;
+                }
+            } catch { /* non-blocking */ }
+
             let result;
             const finalPrompt = `${personaContext}${characterContext}${memoryContext}\n${prompt}`;
 
@@ -314,6 +328,7 @@ ${contextStr}`;
                         deepThinking,
                         quickResponse: isSimpleChat,
                         preferredBrain: personaBrain || 'auto',
+                        activeGoals: contextActiveGoals,
                         ...queryMeta
                     });
                 }

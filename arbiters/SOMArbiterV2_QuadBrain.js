@@ -93,6 +93,7 @@ class SOMArbiterV2_QuadBrain extends EventEmitter {
     this.commandBridge = opts.commandBridge; // 🎮 Self-awareness: Control Command Bridge UI
     this.toolRegistry = opts.toolRegistry; // 🛠️ Tool Registry
     this.nemesis = opts.nemesis; // 🔴 Nemesis Adversarial System (Injected)
+    this.goalPlanner = opts.goalPlanner || null; // 🎯 GoalPlanner — inject active goals into every call
 
     // Primary: Gemini API setup
     this.apiKey = process.env.GEMINI_API_KEY;
@@ -536,6 +537,30 @@ class SOMArbiterV2_QuadBrain extends EventEmitter {
           } catch (err) {
             this.logger?.warn(`[${this.name}] ⚠️ Autonomous activity context failed: ${err.message}`);
           }
+        }
+
+        // 🎯 GOALS: Always inject active goals — not just on activity-pattern queries
+        if (this.goalPlanner) {
+          try {
+            const gr = this.goalPlanner.getActiveGoals?.({});
+            const goals = (gr?.goals || [])
+              .filter(g => g.status === 'active' || g.status === 'pending')
+              .sort((a, b) => (b.priority || 0) - (a.priority || 0))
+              .slice(0, 3);
+            if (goals.length > 0) {
+              enrichedContext.goalContext = goals
+                .map((g, i) => `${i + 1}. [P${g.priority}] ${g.title} — ${g.metrics?.progress || 0}% complete${g.description ? ` | ${g.description.slice(0, 80)}` : ''}`)
+                .join('\n');
+              this.logger?.info(`[${this.name}] 🎯 Goal context: ${goals.length} active goals injected`);
+            }
+          } catch (err) {
+            this.logger?.warn(`[${this.name}] ⚠️ Goal context: ${err.message}`);
+          }
+        }
+
+        // 🧬 DRIVE STATE: Pass limbic state through to _buildFullPrompt (V3 owns this.limbicState)
+        if (this.limbicState) {
+          enrichedContext.driveState = this.limbicState;
         }
 
         // 🔗 CAUSAL REASONING: Identify cause-effect relationships
@@ -1470,6 +1495,17 @@ CURRENT EMOTIONAL STATE:
 Mood: ${mood.mood} (Energy: ${mood.energy})
 Key Peptides: Joy=${state.joy.toFixed(2)}, Curiosity=${state.curiosity.toFixed(2)}, Stress=${state.stress.toFixed(2)}
 INSTRUCTION: Let this emotional state subtly influence your tone and perspective, but remain professional.`;
+    }
+
+    // 🎯 ACTIVE GOALS — positioned before quickResponse skip so they're always injected
+    if (context.goalContext) {
+      prompt += `\n\nACTIVE GOALS (what I am currently working toward):\n${context.goalContext}\n\nINSTRUCTION: These are real goals tracked in my planner. Look for opportunities to advance them. If the user's query connects to a goal, acknowledge it naturally.`;
+    }
+
+    // 🧬 DRIVE STATE — detailed neurotransmitter profile (V3 limbic, not emotionalEngine peptides)
+    if (context.driveState) {
+      const ds = context.driveState;
+      prompt += `\n\nDRIVE STATE: Dopamine ${(ds.dopamine * 100).toFixed(0)}% | Cortisol ${(ds.cortisol * 100).toFixed(0)}% | Oxytocin ${(ds.oxytocin * 100).toFixed(0)}% | Serotonin ${(ds.serotonin * 100).toFixed(0)}%\nINSTRUCTION: High dopamine = pursue and explore; high cortisol = defensive and efficient; high oxytocin = connective and warm; low serotonin = need restoration. Let this shape your motivational posture.`;
     }
 
     // Inject Conversation History (using fading memory logic)
