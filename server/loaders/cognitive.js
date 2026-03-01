@@ -70,6 +70,7 @@ export async function loadCognitiveSystems(toolRegistry = null) {
             onInitialize: async () => {},
             remember: async () => ({ success: false, error: 'Memory offline' }),
             recall: async () => ({ results: [] }),
+            getRecentColdMemories: (_limit = 20) => [],
             getMemoryStats: () => ({ hot: { size: 0 }, warm: { size: 0 }, cold: { size: 0 } })
         };
     }

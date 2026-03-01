@@ -21,6 +21,7 @@ import Database from 'better-sqlite3';
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
+import os from 'os';
 
 // ===========================
 // Vector Utilities
@@ -389,57 +390,81 @@ class MnemonicArbiter extends BaseArbiter {
     }
   }
 
-  async _initSQLite() {
-    try {
-      this.log('info', 'Initializing SQLite (cold tier)...');
-
-      this.db = new Database(this.config.dbPath);
-
-      // Enable optimizations
-      this.db.pragma('journal_mode = WAL'); // Write-ahead logging for better concurrency
-      this.db.pragma('synchronous = NORMAL'); // Balance between safety and speed
-      this.db.pragma('cache_size = -8000'); // 8MB cache (was 64MB — reduced to save heap when multiple instances exist)
-      this.db.pragma('temp_store = MEMORY');
-      this.db.pragma('query_only = OFF');
-
-      // Create tables
-      this.db.exec(`
-        CREATE TABLE IF NOT EXISTS memories (
-          id TEXT PRIMARY KEY,
-          content TEXT NOT NULL,
-          metadata TEXT,
-          embedding_id TEXT,
-          created_at INTEGER NOT NULL,
-          accessed_at INTEGER NOT NULL,
-          access_count INTEGER DEFAULT 0,
-          importance REAL DEFAULT 0.5,
-          tier TEXT DEFAULT 'cold'
-        );
-
-        CREATE INDEX IF NOT EXISTS idx_accessed_at ON memories(accessed_at DESC);
-        CREATE INDEX IF NOT EXISTS idx_importance ON memories(importance DESC);
-        CREATE INDEX IF NOT EXISTS idx_tier ON memories(tier);
-        CREATE INDEX IF NOT EXISTS idx_access_count ON memories(access_count DESC);
-        
-        CREATE TABLE IF NOT EXISTS vector_index (
-          embedding_id TEXT PRIMARY KEY,
-          memory_id TEXT NOT NULL,
-          vector_hash TEXT NOT NULL,
-          created_at INTEGER NOT NULL,
-          FOREIGN KEY(memory_id) REFERENCES memories(id)
-        );
-
-        CREATE INDEX IF NOT EXISTS idx_vector_memory ON vector_index(memory_id);
-      `);
-
-      // Optimize on startup
-      this.db.exec('ANALYZE;');
-
-      this.log('info', '❄️  Cold tier (SQLite) ready');
-    } catch (error) {
-      this.log('error', 'SQLite initialization failed', { error: error.message });
-      throw error;
+  // Helper — apply schema to an open Database instance
+  _setupDb(db, inMemory = false) {
+    if (!inMemory) {
+      db.pragma('journal_mode = WAL');
+      db.pragma('synchronous = NORMAL');
     }
+    db.pragma('cache_size = -8000');
+    db.pragma('temp_store = MEMORY');
+    db.pragma('query_only = OFF');
+
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS memories (
+        id TEXT PRIMARY KEY,
+        content TEXT NOT NULL,
+        metadata TEXT,
+        embedding_id TEXT,
+        created_at INTEGER NOT NULL,
+        accessed_at INTEGER NOT NULL,
+        access_count INTEGER DEFAULT 0,
+        importance REAL DEFAULT 0.5,
+        tier TEXT DEFAULT 'cold'
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_accessed_at ON memories(accessed_at DESC);
+      CREATE INDEX IF NOT EXISTS idx_importance ON memories(importance DESC);
+      CREATE INDEX IF NOT EXISTS idx_tier ON memories(tier);
+      CREATE INDEX IF NOT EXISTS idx_access_count ON memories(access_count DESC);
+
+      CREATE TABLE IF NOT EXISTS vector_index (
+        embedding_id TEXT PRIMARY KEY,
+        memory_id TEXT NOT NULL,
+        vector_hash TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        FOREIGN KEY(memory_id) REFERENCES memories(id)
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_vector_memory ON vector_index(memory_id);
+    `);
+
+    db.exec('ANALYZE;');
+  }
+
+  async _initSQLite() {
+    // Try three paths in order. Never throw — a degraded cold tier is better than
+    // falling all the way back to the in-memory stub in cognitive.js.
+    const candidates = [
+      { path: this.config.dbPath,                                   label: 'configured path',   inMemory: false },
+      { path: path.join(os.tmpdir(), 'soma-memory.db'),             label: 'temp-dir fallback', inMemory: false },
+      { path: ':memory:',                                           label: 'in-memory SQLite',  inMemory: true  },
+    ];
+
+    for (const candidate of candidates) {
+      try {
+        this.log('info', `Initializing SQLite (cold tier) — ${candidate.label}…`);
+        const db = new Database(candidate.path);
+        this._setupDb(db, candidate.inMemory);
+        this.db = db;
+
+        if (candidate.inMemory) {
+          this.log('warn', '⚠️  Cold tier using in-memory SQLite — memories will NOT survive a restart. Fix the db path to make them permanent.');
+        } else if (candidate.path !== this.config.dbPath) {
+          this.log('warn', `⚠️  Cold tier using temp fallback (${candidate.path}) — set dbPath to a writable location to make memories permanent.`);
+        } else {
+          this.log('info', '❄️  Cold tier (SQLite) ready');
+        }
+        return; // success — stop trying
+      } catch (err) {
+        this.log('warn', `SQLite failed on ${candidate.label}: ${err.message}`);
+        this.db = null;
+      }
+    }
+
+    // All three failed — cold tier disabled but we do NOT throw.
+    // MnemonicArbiter stays alive with warm-tier-only operation.
+    this.log('error', 'Cold tier disabled — all SQLite paths failed. Warm tier only.');
   }
 
   async _initVectorStore() {
